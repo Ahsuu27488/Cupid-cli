@@ -228,8 +228,6 @@ detect_platform() {
         PLATFORM="linux"
         log_success "Detected: Linux 🐧"
     fi
-
-    echo "platform=$PLATFORM" > /tmp/cupid_install.conf
 }
 
 check_dependencies() {
@@ -457,6 +455,8 @@ setup_symlink() {
     # Determine where to create symlink
     if [[ "$PLATFORM" == "termux" ]]; then
         SYMLINK_DIR="/data/data/com.termux/files/usr/bin"
+        # Ensure directory exists
+        mkdir -p "$SYMLINK_DIR"
     else
         SYMLINK_DIR="$HOME/.local/bin"
         # Create bin directory if it doesn't exist
