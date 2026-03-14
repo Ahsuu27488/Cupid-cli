@@ -3,13 +3,11 @@ Memory system using SQLite with token tracking and summarization.
 """
 
 import asyncio
-import json
 import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
-import tiktoken
 from openai import AsyncOpenAI
 
 
@@ -81,10 +79,6 @@ class MemoryDB:
         """Fallback token counting: ~4 chars per token (rough estimate)."""
         # Simple approximation: average 4 characters per token for English
         return (len(text) + 3) // 4
-
-    def _count_tokens(self, text: str) -> int:
-        """Count tokens in text using OpenAI's tokenizer."""
-        return len(self.encoding.encode(text))
 
     def add_message(self, role: str, content: str) -> int:
         """Add a message to memory and return its ID."""
