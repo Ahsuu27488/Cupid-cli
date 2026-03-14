@@ -487,11 +487,34 @@ LAUNCHER_EOF
     # Verify it's in PATH
     if [[ ":$PATH:" != *":$SYMLINK_DIR:"* ]]; then
         log_warning "$SYMLINK_DIR is not in your PATH"
-        log_info "Add this to your ~/.bashrc or ~/.zshrc:"
-        echo "  export PATH=\"$SYMLINK_DIR:\$PATH\""
-        echo
-        echo "Or temporarily:"
-        echo "  export PATH=\"$SYMLINK_DIR:\$PATH\""
+        log_info "Add it to your shell configuration? (recommended)"
+
+        # Detect shell rc file
+        local rc_file=""
+        if [[ -f "$HOME/.bashrc" ]]; then
+            rc_file="$HOME/.bashrc"
+        elif [[ -f "$HOME/.zshrc" ]]; then
+            rc_file="$HOME/.zshrc"
+        elif [[ -f "$HOME/.profile" ]]; then
+            rc_file="$HOME/.profile"
+        fi
+
+        if [[ -n "$rc_file" ]]; then
+            read -p "  Add to $rc_file? (y/N): " -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                echo "" >> "$rc_file"
+                echo "# Cupid command" >> "$rc_file"
+                echo "export PATH=\"$SYMLINK_DIR:\$PATH\"" >> "$rc_file"
+                log_success "Added to $rc_file"
+                log_info "Restart terminal or run: source $rc_file"
+            else
+                log_info "You can add it manually later."
+            fi
+        else
+            log_info "Add this to your shell config:"
+            echo "  export PATH=\"$SYMLINK_DIR:\$PATH\""
+        fi
     else
         log_success "Cupid is ready in your PATH!"
     fi
