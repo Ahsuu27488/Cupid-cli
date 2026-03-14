@@ -251,13 +251,27 @@ check_dependencies() {
         if [[ "$PLATFORM" == "termux" ]]; then
             log_info "Installing via Termux package manager..."
             pkg update -y
+            # Install Python 3.11 for better compatibility with tiktoken
             pkg install -y python git
+            # Try to switch to Python 3.11 if available
+            if command -v python3.11 &>/dev/null; then
+                log_info "Python 3.11 detected - using it for better package compatibility"
+            fi
         else
             log_error "Please install missing dependencies:"
             for dep in "${missing[@]}"; do
                 echo "  - $dep"
             done
             exit 1
+        fi
+    fi
+
+    # On Termux, verify we have a compatible Python version
+    if [[ "$PLATFORM" == "termux" ]]; then
+        local PY_VER=$($(get_system_python) -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "unknown")
+        if [[ "$PY_VER" == "3.13" ]] || [[ "$PY_VER" == "unknown" ]]; then
+            log_warning "Python $PY_VER detected - may have compatibility issues with some packages"
+            log_info "If installation fails, consider: pkg install python=3.11"
         fi
     fi
 
@@ -397,9 +411,16 @@ install_dependencies() {
     log_info "Updating pip (in venv)..."
     "$PIP" install --upgrade pip -q
 
+    # On Termux, install with --only-binary to avoid Rust builds
+    local INSTALL_FLAGS=""
+    if [[ "$PLATFORM" == "termux" ]]; then
+        log_info "Termux detected - using prebuilt packages only (no compilation)"
+        INSTALL_FLAGS="--only-binary=:all:"
+    fi
+
     # Install from requirements.txt
     log_info "Downloading and installing packages..."
-    "$PIP" install -r requirements.txt -q
+    "$PIP" install -r requirements.txt -q $INSTALL_FLAGS
 
     log_success "All dependencies installed!"
 }
@@ -442,6 +463,12 @@ configure_api_key() {
     echo "MAX_RESPONSE_TOKENS=150" >> "$ENV_FILE"
     echo "MEMORY_DB=$INSTALL_DIR/memory.db" >> "$ENV_FILE"
     echo "DEFAULT_MOOD=flirty" >> "$ENV_FILE"
+
+    # Termux-specific note
+    if [[ "$PLATFORM" == "termux" ]]; then
+        echo "" >> "$ENV_FILE"
+        echo "# Termux note: Using simple token counting (tiktoken not available on Android)" >> "$ENV_FILE"
+    fi
 
     # Secure the .env file
     chmod 600 "$ENV_FILE"

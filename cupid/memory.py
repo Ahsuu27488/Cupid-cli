@@ -21,8 +21,29 @@ class MemoryDB:
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self._init_schema()
-        self.encoding = tiktoken.get_encoding("cl100k_base")  # OpenAI tokenizer
+        # Try to use tiktoken, fallback to simple counting on Android/Termux
+        try:
+            import tiktoken
+            self.encoding = tiktoken.get_encoding("cl100k_base")
+            self._count_tokens_impl = self._count_tokens_tiktoken
+        except Exception as e:
+            # tiktoken not available (e.g., Termux/Android)
+            # Use simple approximation: ~4 chars per token
+            self._count_tokens_impl = self._count_tokens_simple
         self.openai_client = openai_client
+
+    def _count_tokens(self, text: str) -> int:
+        """Count tokens using the available method."""
+        return self._count_tokens_impl(text)
+
+    def _count_tokens_tiktoken(self, text: str) -> int:
+        """Count tokens using OpenAI's tokenizer."""
+        return len(self.encoding.encode(text))
+
+    def _count_tokens_simple(self, text: str) -> int:
+        """Fallback token counting: ~4 chars per token (rough estimate)."""
+        # Simple approximation: average 4 characters per token for English
+        return (len(text) + 3) // 4
 
     def _init_schema(self) -> None:
         """Create database schema if not exists."""
@@ -55,6 +76,11 @@ class MemoryDB:
             )
             self.conn.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON conversations(timestamp)")
             self.conn.execute("CREATE INDEX IF NOT EXISTS idx_summary_id ON conversations(summary_id)")
+
+    def _count_tokens_simple(self, text: str) -> int:
+        """Fallback token counting: ~4 chars per token (rough estimate)."""
+        # Simple approximation: average 4 characters per token for English
+        return (len(text) + 3) // 4
 
     def _count_tokens(self, text: str) -> int:
         """Count tokens in text using OpenAI's tokenizer."""
