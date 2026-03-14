@@ -47,15 +47,19 @@ Get your API key from: https://platform.openai.com/api-keys
 
 ### Run Cupid 💕
 
+Make sure you're in the **project root folder** (`Cupid/`), then run:
+
 ```bash
-python main.py
+python -m cupid.main
 ```
 
 Or if you installed with UV:
 
 ```bash
-uv run main.py
+uv run -m cupid.main
 ```
+
+**Important:** Don't run `python main.py` from inside the `cupid/` folder - that will cause import errors!
 
 ## 💬 Example Conversation
 

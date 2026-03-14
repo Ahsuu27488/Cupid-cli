@@ -159,47 +159,6 @@ class MemoryDB:
         from cupid.config import config
         return config.summarization_threshold
 
-    def _create_summary(self) -> None:
-        """Summarize old messages and replace them with a summary."""
-        # Get messages to summarize (oldest ones)
-        cursor = self.conn.execute(
-            "SELECT id, role, content FROM conversations WHERE summary_id IS NULL ORDER BY id ASC LIMIT 10"
-        )
-        messages = cursor.fetchall()
-
-        if len(messages) < 3:  # Need at least 3 messages to summarize
-            return
-
-        start_id = messages[0]["id"]
-        end_id = messages[-1]["id"]
-
-        # Build summary text - try AI first, fallback to simple
-        try:
-            if self.openai_client:
-                summary_text = asyncio.run(self._generate_ai_summary(messages))
-            else:
-                summary_text = self._generate_summary_text(messages)
-        except Exception:
-            # Fallback to simple summary on any error
-            summary_text = self._generate_summary_text(messages)
-
-        summary_tokens = self._count_tokens(summary_text)
-
-        # Store summary
-        with self.conn:
-            cursor = self.conn.execute(
-                "INSERT INTO summaries (content, start_id, end_id, token_count) VALUES (?, ?, ?, ?)",
-                (summary_text, start_id, end_id, summary_tokens)
-            )
-            summary_id = cursor.lastrowid
-
-            # Mark original messages as summarized
-            ids = [str(row["id"]) for row in messages]
-            self.conn.execute(
-                f"UPDATE conversations SET summary_id = ? WHERE id IN ({','.join(ids)})",
-                (summary_id,)
-            )
-
     def _generate_summary_text(self, messages: List[sqlite3.Row]) -> str:
         """Create a brief summary of conversation thread."""
         # Simple summary: list of exchanges

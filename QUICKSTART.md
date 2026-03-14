@@ -24,9 +24,13 @@ pip install -r requirements.txt
 
 ### 3. Run Cupid!
 
+Make sure you're in the **Cupid project folder** (where you ran `git clone`), then:
+
 ```bash
-python main.py
+python -m cupid.main
 ```
+
+**Note:** Don't navigate into the `cupid/` folder and run `python main.py` - that won't work! Stay in the project root.
 
 ---
 

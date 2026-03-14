@@ -49,7 +49,7 @@ def test_setup():
     print("\n" + "=" * 50)
     print("✅ ALL CHECKS PASSED! Cupid is ready! 💕")
     print("=" * 50)
-    print("\n🚀 Run: python main.py")
+    print("\n🚀 Run: python -m cupid.main")
     return True
 
 if __name__ == "__main__":
