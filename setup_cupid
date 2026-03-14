@@ -411,16 +411,9 @@ install_dependencies() {
     log_info "Updating pip (in venv)..."
     "$PIP" install --upgrade pip -q
 
-    # On Termux, install with --only-binary to avoid Rust builds
-    local INSTALL_FLAGS=""
-    if [[ "$PLATFORM" == "termux" ]]; then
-        log_info "Termux detected - using prebuilt packages only (no compilation)"
-        INSTALL_FLAGS="--only-binary=:all:"
-    fi
-
     # Install from requirements.txt
     log_info "Downloading and installing packages..."
-    "$PIP" install -r requirements.txt -q $INSTALL_FLAGS
+    "$PIP" install -r requirements.txt -q
 
     log_success "All dependencies installed!"
 }
