@@ -12,21 +12,63 @@ A smart Python chatbot that uses OpenAI's GPT to respond with charming, flirty r
 - ✨ **Keeps it real** - short, sweet responses with Ahsan's genuine affection
 - 📊 **Conversation stats** - see how much you've chatted
 
-## 🚀 Quick Setup
+## 🚀 Quick Setup (Automatic Installation)
 
-### Option 1: Using UV (fastest) ⚡
+The easiest way to install Cupid - just one command:
 
 ```bash
-# Install uv if you don't have it
-pip install uv
+git clone https://github.com/Ahsuu27488/Cupid.git
+cd Cupid
+bash setup_cupid
+```
 
-# Clone and setup
+The **`setup_cupid`** script will:
+- ✅ Detect your platform (Termux/Linux/macOS)
+- ✅ Install Python dependencies automatically
+- ✅ Prompt for your OpenAI API key (securely)
+- ✅ Create the `cupid` command (works from **anywhere**!)
+- ✅ Test the installation
+
+After setup completes, simply run:
+
+```bash
+cupid
+```
+
+That's it! No need to remember complex commands. 💕
+
+### What does the setup script do?
+
+1. Checks for Python and installs if missing (Termux)
+2. Creates a virtual environment
+3. Installs all required packages
+4. Configures your `.env` file with API key
+5. Creates a global `cupid` command symlink
+6. Verifies everything works
+
+### Platform-Specific Notes
+
+**📱 Termux (Android):**
+- Works perfectly! The `cupid` command will be placed in Termux's bin directory
+- Run `cupid` from any folder
+
+**🖥️ Linux/macOS:**
+- The `cupid` command will be linked to `~/.local/bin/cupid`
+- You may need to add `~/.local/bin` to your PATH (the installer will prompt you)
+
+### Manual Setup (Advanced)
+
+If you prefer manual control or the script doesn't work:
+
+#### Using UV (recommended for developers):
+
+```bash
 git clone https://github.com/Ahsuu27488/Cupid.git
 cd Cupid
 uv sync
 ```
 
-### Option 2: Using PIP 🐍
+#### Using PIP:
 
 ```bash
 git clone https://github.com/Ahsuu27488/Cupid.git
@@ -34,32 +76,30 @@ cd Cupid
 pip install -r requirements.txt
 ```
 
-### Configure API Key
-
-Create a `.env` file in the project folder:
+Then configure your `.env` file:
 
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
-MODEL=gpt-4o-mini  # optional
+OPENAI_API_KEY=your_key_here
+MODEL=gpt-4o-mini
 ```
 
 Get your API key from: https://platform.openai.com/api-keys
 
-### Run Cupid 💕
+### Running Cupid
 
-Make sure you're in the **project root folder** (`Cupid/`), then run:
+**After automatic setup:**
+
+```bash
+cupid
+```
+
+**After manual setup:**
 
 ```bash
 python -m cupid.main
 ```
 
-Or if you installed with UV:
-
-```bash
-uv run -m cupid.main
-```
-
-**Important:** Don't run `python main.py` from inside the `cupid/` folder - that will cause import errors!
+**Important:** Never run `python main.py` from inside the `cupid/` folder - that causes import errors! Always run from the project root.
 
 ## 💬 Example Conversation
 

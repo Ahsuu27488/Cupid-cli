@@ -8,29 +8,56 @@ Cupid is an AI companion created by Ahsan with love 💕 She remembers your conv
 
 ## 🚀 Getting Started
 
-### 1. Make sure you have Python installed
+### 🎉 Automatic Setup (Just One Command!)
 
-Open Command Prompt or Terminal and type:
-```bash
-python --version
-```
-You should see `Python 3.11` or higher. If not, download Python from python.org
-
-### 2. Install the dependencies
+The fastest way to get Cupid running:
 
 ```bash
-pip install -r requirements.txt
+# 1. Clone the repository
+git clone https://github.com/Ahsuu27488/Cupid.git
+cd Cupid
+
+# 2. Run the setup script
+bash setup_cupid
 ```
 
-### 3. Run Cupid!
+The script will guide you through:
+- Installing dependencies
+- Entering your OpenAI API key
+- Setting up the `cupid` command
 
-Make sure you're in the **Cupid project folder** (where you ran `git clone`), then:
+### 3. Start Cupid!
+
+After setup finishes, simply type:
 
 ```bash
-python -m cupid.main
+cupid
 ```
 
-**Note:** Don't navigate into the `cupid/` folder and run `python main.py` - that won't work! Stay in the project root.
+That's it! No more commands to remember. 💕
+
+---
+
+### 🔧 Need Troubleshooting?
+
+**"bash: setup_cupid: Permission denied"**
+```bash
+chmod +x setup_cupid
+./setup_cupid
+```
+
+**"cupid: command not found"**
+The setup script should have added the command to your PATH. If not, run:
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+(Or for Termux: it's already in PATH!)
+
+---
+
+### 📱 Termux Users
+
+Everything works the same! Just run `bash setup_cupid` and then `cupid` from anywhere.
 
 ---
 
