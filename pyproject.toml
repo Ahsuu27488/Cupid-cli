@@ -1,0 +1,25 @@
+[project]
+name = "cupid"
+version = "0.1.0"
+description = "💝 Cupid - A love letter from Ahsan to Ashu"
+authors = [{name = "Ahsan"}]
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "rich>=13.0.0",
+    "tiktoken>=0.5.0",
+]
+
+[project.scripts]
+cupid = "cupid.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0",
+]
