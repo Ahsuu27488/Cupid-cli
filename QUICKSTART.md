@@ -14,8 +14,8 @@ The fastest way to get Cupid running:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Ahsuu27488/Cupid.git
-cd Cupid
+git clone https://github.com/Ahsuu27488/Cupid-cli.git
+cd Cupid-cli
 
 # 2. Run the setup script
 bash setup_cupid

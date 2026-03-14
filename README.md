@@ -17,8 +17,8 @@ A smart Python chatbot that uses OpenAI's GPT to respond with charming, flirty r
 The easiest way to install Cupid - just one command:
 
 ```bash
-git clone https://github.com/Ahsuu27488/Cupid.git
-cd Cupid
+git clone https://github.com/Ahsuu27488/Cupid-cli.git
+cd Cupid-cli
 bash setup_cupid
 ```
 
@@ -63,16 +63,16 @@ If you prefer manual control or the script doesn't work:
 #### Using UV (recommended for developers):
 
 ```bash
-git clone https://github.com/Ahsuu27488/Cupid.git
-cd Cupid
+git clone https://github.com/Ahsuu27488/Cupid-cli.git
+cd Cupid-cli
 uv sync
 ```
 
 #### Using PIP:
 
 ```bash
-git clone https://github.com/Ahsuu27488/Cupid.git
-cd Cupid
+git clone https://github.com/Ahsuu27488/Cupid-cli.git
+cd Cupid-cli
 pip install -r requirements.txt
 ```
 

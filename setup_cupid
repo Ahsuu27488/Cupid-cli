@@ -38,7 +38,7 @@ else
 fi
 
 VENV_DIR="${VENV_DIR:-$INSTALL_DIR/.venv}"
-REPO_URL="https://github.com/Ahsuu27488/Cupid.git"
+REPO_URL="https://github.com/Ahsuu27488/Cupid-cli.git"
 BIN_DIR="${BIN_DIR:-$HOME/.local/bin}"
 TERMUX_BIN="/data/data/com.termux/files/usr/bin"
 
@@ -171,7 +171,7 @@ ${CYAN}Usage:${RESET}
     $ ./setup_cupid
 
   ${GREEN}Remote installation (from GitHub):${RESET}
-    $ bash <(curl -fsSL https://raw.githubusercontent.com/Ahsuu27488/Cupid/main/setup_cupid)
+    $ bash <(curl -fsSL https://raw.githubusercontent.com/Ahsuu27488/Cupid-cli/main/setup_cupid)
 
   ${GREEN}With options:${RESET}
     $ ./setup_cupid --remote    # Install from remote URL
